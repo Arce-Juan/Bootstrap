@@ -1,0 +1,6 @@
+Desarrollado por Galvan Jose y Juan Arce
+
+Nota: 
+    Se debe correr bajo un local host cualquiera para que se muestren los modulos
+
+    Se recomienda Live Server de Visual Studio Code
