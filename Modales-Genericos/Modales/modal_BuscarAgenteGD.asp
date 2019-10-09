@@ -1,0 +1,175 @@
+<script type="text/javascript">
+    var modal_BuscarArray_ArrayAgentes;
+
+    function modal_BuscarAgente_Agente() {
+        var dni = $("#modal_idInputDni").val();
+        var nombre = $("#modal_idInputNombres").val();
+
+        if ($("#modal_idInputNombres").val() == "" && $("#modal_idInputDni").val() == "") {
+            alert("Debe ingresar un valor en un campo para buscar.-");
+            $("#modal_idInputDni").focus();
+            modal_BuscarAgente_LimpiarControles();
+        }
+        else {
+            var req = new XMLHttpRequest();
+            req.open("GET", "Modales/modal_BuscarAgenteGD_Controlador.asp?op=agente&dni=" + dni + "&nombre=" + nombre, true);
+            req.onload = function () {
+                if (req.status == 200) {
+                    if (IsJsonString(req.response)) {
+                        var elem = $("#modal_idSelectAgente");
+                        elem.empty(); // Limpiamos el contenedor
+                        var s = "";
+                        data = JSON.parse(req.response);
+                        if (data.Agentes.length > 0) {
+                            modal_BuscarArray_ArrayAgentes = data.Agentes;
+                            $.each(data.Agentes, function (i, item) {
+                                s += "<option value='" + item.dni + "'>" + item.dni + "-" + item.apellidos + ", " + item.nombres + "-" + item.sexot + "</option>";
+                            });
+                        }
+                        else {
+                            s += "<option value='-1'>No existe ningun Agente con el documento ingresado</option>";  // se podria cambiar con un alert
+                        }
+                        elem.html(s);
+                    }
+                    else {
+                        alert("El Json no es valido.-");
+                    }
+                }
+                else {
+                    alert("ocurrio un error: No se encontro la pagina solicitada.-");
+                }
+            }
+            req.send();
+        }
+    }
+
+    function modal_BuscarAgente_ObtenerAgenteDeArray() {
+        var miIdSelect = $("#modal_idSelectAgente option:selected").val();
+        if (miIdSelect === undefined || miIdSelect === null) {
+            alert("No se selecciono ningún agente.-");
+        }
+        else {
+            if (miIdSelect == -1) {
+                $('#idGenericModal_BuscarAgente').modal('hide');
+                modal_BuscarAgente_LimpiarControles();
+            }
+            else {
+                var miObj;
+                if (miIdSelect == 0) {
+                    miObj = {
+                        idAlumno: 0,
+                        docAlumno: $("#idImputDoc").val()
+                    };
+                }
+                else {
+                    modal_BuscarArray_ArrayAgentes.forEach(function (elemento, indice, array) {
+                        if (elemento.dni == miIdSelect) {
+                            miObj = elemento;
+                        }
+                    });
+                }
+                $('#idGenericModal_BuscarAgente').modal('hide');
+                modal_BuscarAgente_LimpiarControles();
+                genericModal_BuscarAgenteGD_RecuperarAgente(miObj); // esta funcion debe estar definida en el fuente pricipal si o si para que funcione
+            }
+        }
+    }
+
+    function modal_BuscarAgente_LimpiarControles() {
+        modal_BuscarArray_ArrayAgentes = [];
+        $("#modal_idInputApellidos").val("");
+        $("#modal_idInputNombres").val("");
+        $("#modal_idInputNumAfiliado").val("");
+        $("#modal_idInputDni").val("");
+        $("#modal_idSelectAgente").empty();
+    }
+</script>
+
+<div class="modal fade bd-example-modal-lg" id="idGenericModal_BuscarAgente" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content col-md-10">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Buscar Agente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 0%;">
+                <div class="container mt-3">
+
+                    <div class="form-group row">
+                        <label for="colFormLabelSm"
+                            class="col-3 col-md-2 col-form-label col-form-label-sm">Documento</label>
+                        <div class="col col-md-6">
+                            <input id="modal_idInputDni" class="form-control form-control-sm solo-numero largeModal_BuscarAgente"
+                                type="text" placeholder="Ej: 33222111">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="colFormLabelSm"
+                            class="col-3 col-md-2 col-form-label col-form-label-sm">Nombres</label>
+                        <div class="col col-md-6">
+                            <input id="modal_idInputNombres" class="form-control form-control-sm solo-letra largeModal_BuscarAgente"
+                                type="text" placeholder="Ej: Juan">
+                        </div>
+                    </div>
+
+                    <div class="form-group row d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary btn-sm"
+                            onclick="modal_BuscarAgente_Agente();">Buscar Agente</button>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row col-12">
+                        Seleccione una Opción:
+                    </div>
+                    <div class="row col-12">
+                        <select id="modal_idSelectAgente" size="2" style="height:100px; width:600px;"
+                            ondblclick="modal_BuscarAgente_ObtenerAgenteDeArray();">
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer mt-3">
+                <button type="button" class="btn btn-primary btn-sm"
+                    onclick="modal_BuscarAgente_ObtenerAgenteDeArray();">Agregar</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    $('.solo-numero').keyup(function () {
+                        this.value = (this.value + '').replace(/[^0-9]/g, '');
+                    });
+
+                    $('.solo-letra').keyup(function () {
+                        this.value = (this.value + '').replace(/[^a-z,^A-Z, ]/g, '');
+                    });
+
+                    $('input.largeModal_BuscarAgente').keypress(function (e) {
+                        if (e.which == 13) {
+                            modal_BuscarAgente_Agente();
+                        }
+                    });
+
+                });
+
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#idGenericModal_BuscarAgente').on('shown.bs.modal', function () {
+        $('#modal_idInputApellidos').focus();
+    })
+
+    $('#idGenericModal_BuscarAgente').on('hidden.bs.modal', function () {
+        modal_BuscarAgente_LimpiarControles();
+    })
+</script>
