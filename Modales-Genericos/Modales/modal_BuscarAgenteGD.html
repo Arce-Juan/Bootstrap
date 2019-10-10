@@ -12,10 +12,11 @@
         }
         else {
             var req = new XMLHttpRequest();
-            req.open("GET", "Modales/modal_BuscarAgenteGD_Controlador.asp?op=agente&dni=" + dni + "&nombre=" + nombre, true);
+            req.open("GET", "Json/Agentes.json", true);
             req.onload = function () {
                 if (req.status == 200) {
-                    if (IsJsonString(req.response)) {
+                    //console.log(req.response);
+                    if (GenericJS_IsJsonString(req.response)) {
                         var elem = $("#modal_idSelectAgente");
                         elem.empty(); // Limpiamos el contenedor
                         var s = "";
@@ -23,7 +24,7 @@
                         if (data.Agentes.length > 0) {
                             modal_BuscarArray_ArrayAgentes = data.Agentes;
                             $.each(data.Agentes, function (i, item) {
-                                s += "<option value='" + item.dni + "'>" + item.dni + "-" + item.apellidos + ", " + item.nombres + "-" + item.sexot + "</option>";
+                                s += "<option value='" + item.idAgente + "'>" + item.dni + "-" + item.nombre + "-" + item.sexo + "</option>";
                             });
                         }
                         else {
@@ -44,6 +45,7 @@
     }
 
     function modal_BuscarAgente_ObtenerAgenteDeArray() {
+        //console.log(modal_BuscarArray_ArrayAgentes);
         var miIdSelect = $("#modal_idSelectAgente option:selected").val();
         if (miIdSelect === undefined || miIdSelect === null) {
             alert("No se selecciono ningún agente.-");
@@ -55,19 +57,13 @@
             }
             else {
                 var miObj;
-                if (miIdSelect == 0) {
-                    miObj = {
-                        idAlumno: 0,
-                        docAlumno: $("#idImputDoc").val()
-                    };
-                }
-                else {
-                    modal_BuscarArray_ArrayAgentes.forEach(function (elemento, indice, array) {
-                        if (elemento.dni == miIdSelect) {
-                            miObj = elemento;
-                        }
-                    });
-                }
+
+                modal_BuscarArray_ArrayAgentes.forEach(function (elemento, indice, array) {
+                    if (elemento.idAgente == miIdSelect) {
+                        miObj = elemento;
+                    }
+                });
+
                 $('#idGenericModal_BuscarAgente').modal('hide');
                 modal_BuscarAgente_LimpiarControles();
                 genericModal_BuscarAgenteGD_RecuperarAgente(miObj); // esta funcion debe estar definida en el fuente pricipal si o si para que funcione

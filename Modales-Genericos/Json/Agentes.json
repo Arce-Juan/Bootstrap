@@ -1,0 +1,23 @@
+{
+    "Agentes":
+    [
+		{
+			"idAgente": "11",
+			"dni": "31123456",
+			"nombre": "ARCE, JUAN",
+			"sexo": "MASCULINO"
+		},
+		{
+			"idAgente": "22",
+			"dni": "40987654",
+			"nombre": "GALVAN, JOSE",
+			"sexo": "MASCULINO"
+		},
+        {
+            "idAgente": "33",
+            "dni": "31123456",
+            "nombre": "GUIMENEZ, JESSICA",
+            "sexo": "FEMENINO"
+        }
+    ]
+}

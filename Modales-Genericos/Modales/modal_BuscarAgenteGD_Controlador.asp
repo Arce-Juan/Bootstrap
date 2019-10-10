@@ -1,10 +1,3 @@
-<%@ Language=VBScript %>
-
-<%
-
-Response.ContentType = "text/html"
-Response.AddHeader "Content-Type", "text/html;charset=UTF-8"
-Response.CharSet = "UTF-8"
 
 dim tipoBusqueda
 tipoBusqueda = Request.QueryString("op")

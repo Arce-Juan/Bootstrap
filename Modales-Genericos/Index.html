@@ -21,8 +21,9 @@
         crossorigin="anonymous"></script>
 
     <script src="Js/codigo.js"></script>
+    <script src="Js/genericJS.js"></script>
 
-    <title>Hello, world!</title>
+    <title>Prueba de modales!</title>
 </head>
 
 <body>
@@ -34,17 +35,44 @@
         </div>
 
         <div class="form-group row">
-            <label for="colFormLabelSm" class="col-3 col-md-2 col-form-label col-form-label-sm">Apellidos</label>
+            <label for="colFormLabelSm" class="col-3 col-md-2 col-form-label col-form-label-sm">Buscar Agente</label>
             <div class="input-group input-group-sm mb-3 col-4">
-                <input type="text" id="idImputCue" value=""
-                    class="form-control form-control-sm solo-numero"
-                    placeholder="Ej.: XXXXX" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input type="text" id="idImputAgente" value="" class="form-control form-control-sm solo-numero"
+                    placeholder="" aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
                 <div class="input-group-append">
-                    <button class="btn btn-primary btn-sm"
-                        onclick="lanzarModalAgente();" type="button">Buscar</button>
+                    <button class="btn btn-primary btn-sm" onclick="lanzarModalAgente();" type="button">Buscar</button>
                 </div>
             </div>
         </div>
+
+        <div class="form-group row">
+            <label for="colFormLabelSm" class="col-3 col-md-2 col-form-label col-form-label-sm">Lanzar Alerta</label>
+            <div class="input-group input-group-sm mb-3 col-4">
+                <input type="text" id="idImputTituloAlerta" value="" class="form-control form-control-sm"
+                    placeholder="Titulo" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input type="text" id="idImputMensajeAlerta" value="" class="form-control form-control-sm"
+                    placeholder="Detalle" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-primary btn-sm" onclick="lanzarModalAlerta();" type="button">Lanzar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="colFormLabelSm" class="col-3 col-md-2 col-form-label col-form-label-sm">Lanzar Confirmación</label>
+            <div class="input-group input-group-sm mb-3 col-4">
+                <input type="text" id="idImputTituloConfirmacion" value="" class="form-control form-control-sm"
+                    placeholder="Titulo" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <input type="text" id="idImputMensajeConfirmacion" value="" class="form-control form-control-sm"
+                    placeholder="Detalle" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-primary btn-sm" onclick="lanzarModalConfirmacion();" type="button">Lanzar</button>
+                </div>
+                <input type="text" id="idImputValorConfirmacion" value="" class="form-control form-control-sm"
+                    placeholder="valor devuelto" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            </div>
+        </div>
+
     </div>
 
     <div id="divMisModales"></div>
